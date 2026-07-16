@@ -1,67 +1,66 @@
 // ==============================
 // Category Tabs
 // ==============================
-
 const tabs = document.querySelectorAll(".tab");
 const cards = document.querySelectorAll(".card");
+const grid = document.querySelector(".services-grid");
+let currentCategory = "bath";
 
-tabs.forEach(tab => {
+tabs.forEach((tab) => {
+  tab.addEventListener("click", () => {
+    tabs.forEach((t) => t.classList.remove("active"));
+    tab.classList.add("active");
 
-    tab.addEventListener("click", () => {
+    grid.classList.add("changing");
 
-        tabs.forEach(btn => btn.classList.remove("active"));
-        tab.classList.add("active");
+    setTimeout(() => {
+      currentCategory = tab.dataset.category;
 
-        const category = tab.dataset.category;
+      const category = tab.dataset.category;
 
-        cards.forEach(card => {
+      cards.forEach((card) => {
+        card.style.display =
+          card.dataset.category === category ? "flex" : "none";
+      });
 
-            if (card.dataset.category === category) {
-                card.style.display = "flex";
-            } else {
-                card.style.display = "none";
-            }
-
-        });
-
-    });
-
+      grid.classList.remove("changing");
+    }, 250);
+  });
 });
 
 // Show Bath services initially
-cards.forEach(card => {
-
-    if (card.dataset.category !== "bath") {
-        card.style.display = "none";
-    }
-
+cards.forEach((card) => {
+  if (card.dataset.category !== "bath") {
+    card.style.display = "none";
+  }
 });
-
 
 // ==============================
 // Search
 // ==============================
-
 const search = document.getElementById("search");
 
 search.addEventListener("input", () => {
+  const value = search.value.trim().toLowerCase();
 
-    const value = search.value.toLowerCase();
+  cards.forEach((card) => {
+    const service = card.dataset.name.toLowerCase();
 
-    cards.forEach(card => {
-
-        const service = card.dataset.name.toLowerCase();
-
-        if (service.includes(value)) {
-            card.style.display = "flex";
-        } else {
-            card.style.display = "none";
-        }
-
-    });
-
+    // If search is empty, show only the current tab
+    if (value === "") {
+      card.style.display =
+        card.dataset.category === currentCategory ? "flex" : "none";
+    }
+    // Otherwise, filter by search text
+    else {
+      if (service.includes(value)) {
+        card.style.display = "flex";
+      } else {
+        card.style.display = "none";
+      }
+    }
+  });
 });
-
 
 // ==============================
 // Appointment Summary
@@ -77,126 +76,50 @@ const selectedServices = new Set();
 
 
 // ==============================
-// Add Service
-// ==============================
-
-document.querySelectorAll(".add-service").forEach(button => {
-
-    button.addEventListener("click", () => {
-
-        const card = button.closest(".card");
-
-        const name = card.dataset.name;
-        const price = Number(card.dataset.price);
-
-        if (selectedServices.has(name)) {
-
-            alert("Service already added.");
-            return;
-
-        }
-
-        selectedServices.add(name);
-
-        button.textContent = "Added ✓";
-        button.disabled = true;
-
-        emptyMessage.style.display = "none";
-
-        const li = document.createElement("li");
-
-        li.dataset.name = name;
-        li.dataset.price = price;
-
-        li.innerHTML = `
-            <span>${name}</span>
-
-            <div>
-
-                ₹${price}
-
-                <button class="remove-btn">
-                    ✕
-                </button>
-
-            </div>
-        `;
-
-        appointmentList.appendChild(li);
-
-        total += price;
-
-        totalPrice.textContent = `₹${total}`;
-
-    });
-
-});
-
-
-// ==============================
-// Remove Service
-// ==============================
-
-appointmentList.addEventListener("click", (e) => {
-
-    if (!e.target.classList.contains("remove-btn")) return;
-
-    const item = e.target.closest("li");
-
-    const name = item.dataset.name;
-    const price = Number(item.dataset.price);
-
-    selectedServices.delete(name);
-
-    total -= price;
-
-    totalPrice.textContent = `₹${total}`;
-
-    item.remove();
-
-    const card = document.querySelector(
-        `.card[data-name="${name}"]`
-    );
-
-    const button = card.querySelector(".add-service");
-
-    button.disabled = false;
-    button.textContent = "Add Service";
-
-    if (appointmentList.children.length === 0) {
-
-        emptyMessage.style.display = "block";
-
-    }
-
-});
-
-
-// ==============================
 // Book Appointment
 // ==============================
 
 const bookButton = document.getElementById("book-btn");
-
 bookButton.addEventListener("click", () => {
+  if (selectedServices.size === 0) {
+    alert("Please select at least one service.");
+    return;
+  }
 
-    if (selectedServices.size === 0) {
+  const services = [...selectedServices].join(", ");
 
-        alert("Please select at least one service.");
+  alert(`Appointment Booked!
 
-        return;
+    Services:
+    ${services}
 
-    }
+    Total: ₹${total}`);
 
-    const services = [...selectedServices].join(", ");
+  // Clear appointment list
+  appointmentList.innerHTML = "";
 
-    alert(
-`Appointment Booked!
+  // Reset total
+  total = 0;
+  totalPrice.textContent = "₹0";
 
-Services:
-${services}
+  // Clear selected services
+  selectedServices.clear();
 
-Total: ₹${total}`
-    );
+  // Show empty message
+  emptyMessage.style.display = "block";
 
+  // Reset all Add Service buttons
+  document.querySelectorAll(".add-service").forEach((button) => {
+    button.disabled = false;
+    button.textContent = "Add Service";
+  });
+
+  // Optional: Clear the search box
+  search.value = "";
+
+  // Show only the current tab again
+  cards.forEach((card) => {
+    card.style.display =
+      card.dataset.category === currentCategory ? "flex" : "none";
+  });
 });
