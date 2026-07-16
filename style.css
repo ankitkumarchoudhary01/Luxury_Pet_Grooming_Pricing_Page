@@ -1,247 +1,190 @@
+:root {
+    --primary: #111827;
+    --accent: #2563eb;
+    --bg: #f8fafc;
+    --surface: #fff;
+    --border: #e5e7eb;
+    --text: #111827;
+    --muted: #6b7280;
+    --radius: 14px;
+    --shadow: 0 10px 30px rgba(0, 0, 0, .08);
+    --transition: .3s ease
+}
 
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    box-sizing: border-box
 }
 
 html {
-    scroll-behavior: smooth;
+    scroll-behavior: smooth
 }
 
 body {
     font-family: Arial, Helvetica, sans-serif;
-    background: #ffffff;
-    color: #111111;
-    line-height: 1.6;
-
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6
 }
-
-
-
-/*   GLOBAL   */
 
 .container {
-    width: min(90%, 1200px);
+    width: min(92%, 1200px);
     margin: auto;
-}
-
-section {
-    padding: 80px 0;
-    padding-bottom: 20px;
+    padding: 40px 0
 }
 
 h1,
 h2,
 h3 {
-    font-size: 2rem;
-    color: #111111;
-    margin-bottom: 16px;
+    margin-bottom: 12px
 }
 
 p {
-    color: #666666;
+    color: var(--muted)
 }
 
-a {
-    text-decoration: none;
-    color: inherit;
-}
-
-img {
-    max-width: 100%;
-    display: block;
-}
-
-button,
-.btn {
+button {
     cursor: pointer;
     border: none;
-    outline: none;
-    background: #111111;
-    color: #ffffff;
-    border-radius: 8px;
-    font-size: 1.1rem;
-    padding: 16px 32px;
-    transition: transform .3s ease, background .3s ease, color .3s ease, border .3s ease;
-}
-
-button:hover,
-.btn:hover {
-    background: #ffffff;
-    color: #111111;
-    border: 2px solid #111111;
-    transform: scale(1.1);
-}
-
-/*   background-image   */
-
-
-.background-image {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center 100%;
-    z-index: -1;
-    pointer-events: none;
-    background-position: 50%;
-}
-
-/*   SEARCH   */
-
-section.search-section {
-    padding-bottom: 0px;
+    border-radius: 10px;
+    transition: all .25s ease
 }
 
 .search-section {
-    background: transparent;
-}
-
-.search-section h2 {
     text-align: center;
+    margin-bottom: 30px
 }
 
-.search-section input {
-    display: block;
-    width: 100%;
-    max-width: 600px;
-    margin: 30px auto 0;
-    padding: 16px;
-    border: 1px solid #cccccc;
-    border-radius: 8px;
-    font-size: 1rem;
+#search {
+    width: min(100%, 600px);
+    padding: 14px 18px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-top: 20px;
+    font-size: 16px
 }
 
-/*   PRICING   */
-
-.pricing {
-    background: transparent;
-}
-
-.pricing h2 {
-    text-align: center;
-    margin-bottom: 48px;
-}
-
-.pricing-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-}
-
-.pricing-grid .card div {
+.categories {
     display: flex;
-    flex-direction: row;
-    height: min-content;
-    align-items: baseline;
-    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 35px
+}
+
+.tab {
+    padding: 12px 24px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-weight: 600
+}
+
+.tab.active {
+    background: var(--primary);
+    color: #fff
+}
+
+.services {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px
 }
 
 .card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
     display: flex;
     flex-direction: column;
-    height: 100%;
-
-    background: transparent;
-    backdrop-filter: blur(10px);
-    border: 1px solid #000000;
-    border-radius: 12px;
-    padding: 32px;
-    transition: transform .3s ease, box-shadow .3s ease;
+    box-shadow: var(--shadow);
+    transition: transform .3s ease;
 }
 
 .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, .08);
-}
-
-.card p {
-    flex: 1;
-    margin-bottom: 20px;
-}
-
-.card button {
-    width: 100%;
-    margin-top: auto;
-    border: 2px solid transparent;
-}
-
-.card button:hover {
-    background: #ffffff;
-    color: #111111;
-    border: 2px solid #111111;
-    transform: scale(1);
+    transform: translateY(-5px)
 }
 
 .price {
     display: block;
-    font-size: 1.5rem;
+    font-size: 22px;
     font-weight: bold;
-    color: #111111;
-    margin-bottom: 24px;
+    margin: 15px 0
 }
 
-.price-heading {
-    display: block;
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #111111;
-    margin-bottom: 2px;
+.add-service {
+    margin-top: auto;
+    padding: 12px;
+    background: var(--primary);
+    color: #fff
 }
 
-/*   RESPONSIVE   */
+.appointment {
+    margin-top: 40px;
+    position: sticky;
+    top: 20px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: var(--shadow)
+}
 
-@media (max-width: 992px) {
+#appointment-list {
+    list-style: none;
+    margin: 20px 0
+}
 
-    .pricing-grid,
-    .feature-grid {
-        grid-template-columns: repeat(2, 1fr);
+#appointment-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border)
+}
+
+.appointment-total {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+    font-weight: bold
+}
+
+#book-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--accent);
+    color: #fff
+}
+
+@media(max-width:900px) {
+    .services {
+        grid-template-columns: 1fr
     }
 
-    .hero h1 {
-        font-size: 2.5rem;
-    }
-
-    .header .nav-links {
-        gap: 10px;
-        padding: 5px 0;
+    .appointment {
+        position: static
     }
 }
 
-@media (max-width: 768px) {
-
-    
-
-    .menu-toggle {
-        display: block;
+@media(max-width:600px) {
+    .services-grid {
+        grid-template-columns: 1fr
     }
 
-
-    .pricing-grid {
-        display: grid;
-        grid-template-columns: repeat(1, 1fr);
-        gap: 24px;
+    .categories {
+        justify-content: flex-start;
+        overflow-x: auto
     }
 
-}
-
-@media (max-width: 480px) {
-    
-
-    button,
-    .btn {
-        width: 100%;
-        text-align: center;
-    }
-
-    .header .menu-toggle {
-        margin-left: auto;
-        width: auto;
-    }
-
-    .card {
-        padding: 24px;
+    .tab {
+        white-space: nowrap
     }
 }
