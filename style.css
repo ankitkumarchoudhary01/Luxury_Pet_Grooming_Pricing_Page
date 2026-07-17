@@ -19,10 +19,10 @@
     /* charcoal accent */
     --accent-bright: #6b6b6b;
     --accent-light: #8a8a8a;
-    --accent-dim: rgba(74,74,74,0.10);
-    --accent-border: rgba(74,74,74,0.30);
+    --accent-dim: rgba(74, 74, 74, 0.10);
+    --accent-border: rgba(74, 74, 74, 0.30);
 
-    --border: rgba(74,74,74,0.22);
+    --border: rgba(74, 74, 74, 0.22);
     --border-subtle: rgba(26, 22, 18, 0.08);
     --border-hair: rgba(26, 22, 18, 0.05);
 
@@ -36,8 +36,8 @@
     --shadow-sm: 0 2px 8px rgba(26, 22, 18, 0.06);
     --shadow: 0 8px 32px rgba(26, 22, 18, 0.08), 0 2px 8px rgba(26, 22, 18, 0.04);
     --shadow-lg: 0 20px 60px rgba(26, 22, 18, 0.10), 0 4px 16px rgba(26, 22, 18, 0.06);
-    --shadow-charcoal: 0 8px 40px rgba(74,74,74,0.18);
-    --glow-charcoal: 0 0 24px rgba(74,74,74,0.22);
+    --shadow-charcoal: 0 8px 40px rgba(74, 74, 74, 0.18);
+    --glow-charcoal: 0 0 24px rgba(74, 74, 74, 0.22);
 
     --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 
@@ -70,12 +70,6 @@ body {
     line-height: 1.7;
     font-weight: 300;
     min-height: 100vh;
-
-    /* Warm ivory grain texture + subtle charcoal radial glow */
-    /* background-image:
-        radial-gradient(ellipse 70% 40% at 50% 0%, rgba(74,74,74,0.06) 0%, transparent 70%),
-        radial-gradient(ellipse 50% 60% at 100% 100%, rgba(107,107,107,0.04) 0%, transparent 60%),
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.018'/%3E%3C/svg%3E"); */
 }
 
 .background-image {
@@ -252,7 +246,7 @@ button {
     border-color: transparent;
     color: #ffffff;
     font-weight: 600;
-    box-shadow: 0 4px 20px rgba(74,74,74,0.30), var(--shadow-sm);
+    box-shadow: 0 4px 20px rgba(74, 74, 74, 0.30), var(--shadow-sm);
 }
 
 /* ─── Services Layout ─────────────────────────────────────── */
@@ -328,7 +322,7 @@ button {
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(74,74,74,0.06), transparent 70%);
+    background: radial-gradient(circle, rgba(74, 74, 74, 0.06), transparent 70%);
     pointer-events: none;
 }
 
@@ -365,7 +359,7 @@ button {
     background: linear-gradient(135deg, var(--accent) 0%, #3a3a3a 100%);
     border-color: transparent;
     color: #ffffff;
-    box-shadow: 0 4px 20px rgba(74,74,74,0.28);
+    box-shadow: 0 4px 20px rgba(74, 74, 74, 0.28);
     transform: translateY(-1px);
 }
 
@@ -376,6 +370,9 @@ button {
 /* ─── Appointment Panel ───────────────────────────────────── */
 .booking-details {
     margin-bottom: 32px;
+    font-family: var(--font-display);
+    font-size: 20px;
+
 }
 
 .booking-details h3 {
@@ -408,23 +405,41 @@ button {
     font: inherit;
     background: var(--surface);
     transition: border-color .3s ease, box-shadow .3s ease;
-} 
+}
 
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
     outline: none;
     border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(184,148,63,.15);
+    box-shadow: 0 0 0 3px rgba(184, 148, 63, .15);
+}
+
+.form-group input.error,
+.form-group select.error,
+.form-group textarea.error {
+    border: 2px solid #dc2626;
+    background: #fef2f2;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
+}
+
+.form-group input.error:focus,
+.form-group select.error:focus,
+.form-group textarea.error:focus {
+    outline: none;
+    border-color: #dc2626;
+    box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.2);
 }
 
 textarea {
     resize: vertical;
 }
 
-.appointment h2{
+.appointment h2 {
     margin-bottom: 20px;
+    text-align: center;
 }
+
 .appointment {
     margin-top: 50px;
     position: sticky;
@@ -460,9 +475,10 @@ textarea {
     width: 120px;
     height: 120px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(107,107,107,0.10) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(107, 107, 107, 0.10) 0%, transparent 70%);
     pointer-events: none;
 }
+
 #appointment-list {
     list-style: none;
     display: flex;
@@ -563,7 +579,7 @@ textarea {
     font-weight: 700;
     letter-spacing: 0.14em;
     border-radius: var(--radius-sm);
-    box-shadow: 0 4px 24px rgba(74,74,74,0.28);
+    box-shadow: 0 4px 24px rgba(74, 74, 74, 0.28);
     position: relative;
     overflow: hidden;
 }
@@ -579,7 +595,7 @@ textarea {
 }
 
 #book-btn:hover {
-    box-shadow: 0 8px 36px rgba(74,74,74,0.40);
+    box-shadow: 0 8px 36px rgba(74, 74, 74, 0.40);
     transform: translateY(-2px);
 }
 
@@ -589,7 +605,7 @@ textarea {
 
 #book-btn:active {
     transform: translateY(0);
-    box-shadow: 0 4px 18px rgba(74,74,74,0.28);
+    box-shadow: 0 4px 18px rgba(74, 74, 74, 0.28);
 }
 
 /* ─── Responsive ──────────────────────────────────────────── */
@@ -641,7 +657,7 @@ textarea {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgba(74,74,74,0.25);
+    background: rgba(74, 74, 74, 0.25);
     border-radius: 999px;
 }
 
@@ -652,9 +668,10 @@ textarea {
 /* ─── Text Selection ──────────────────────────────────────── */
 
 ::selection {
-    background: rgba(74,74,74,0.18);
+    background: rgba(74, 74, 74, 0.18);
     color: var(--accent);
 }
+
 /*
 .loader {
     position: fixed;

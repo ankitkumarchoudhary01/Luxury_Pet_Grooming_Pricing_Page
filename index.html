@@ -20,7 +20,7 @@
 
             <h1>Services</h1>
 
-            <input type="search" id="search" placeholder="Search services...">
+            <input type="search" id="search" placeholder="Search services..." aria-label="Search grooming services">
 
         </section>
 
@@ -28,23 +28,23 @@
 
         <section class="categories">
 
-            <button class="tab active" data-category="bath">
+            <button class="tab active" data-category="bath" aria-label="Show bath services">
                 Bath
             </button>
 
-            <button class="tab" data-category="grooming">
+            <button class="tab" data-category="grooming" aria-label="Show grooming services">
                 Grooming
             </button>
 
-            <button class="tab" data-category="nails">
+            <button class="tab" data-category="nails" aria-label="Show nail services">
                 Nails
             </button>
 
-            <button class="tab" data-category="spa">
+            <button class="tab" data-category="spa" aria-label="Show spa services">
                 Spa
             </button>
 
-            <button class="tab" data-category="dental">
+            <button class="tab" data-category="dental" aria-label="Show dental services">
                 Dental
             </button>
 
@@ -259,56 +259,56 @@
 
         <section class="appointment">
 
-            <h2>Appointment Summary</h2>
+            <h2>Appointment Details</h2>
 
             <div class="booking-details">
 
 
                 <div class="form-group">
-                    <label for="owner-name">Owner Name</label>
-                    <input type="text" id="owner-name" placeholder="Owner Name" required>
+                    <label for="owner-name" aria-label="Owner Name label">Owner Name</label>
+                    <input type="text" id="owner-name" placeholder="Owner Name" aria-label="Owner Name input" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="pet-name">Pet Name</label>
-                    <input type="text" id="pet-name" placeholder="Pet's name" required>
+                    <label for="pet-name" aria-label="Pet Name label">Pet Name</label>
+                    <input type="text" id="pet-name" placeholder="Pet's name" aria-label="Pet Name input" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="pet-type">Pet Type</label>
-                    <select id="pet-type">
-                        <option value="">Select Pet</option>
-                        <option>Dog</option>
-                        <option>Cat</option>
-                        <option>Rabbit</option>
-                        <option>Bird</option>
-                        <option>Other</option>
+                    <label for="pet-type" aria-label="Pet Type label">Pet Type</label>
+                    <select id="pet-type" aria-label="Pet Type input">
+                        <option value="" aria-label="Select Pet">Select Pet</option>
+                        <option id="Dog" value="Dog" aria-label="Dog">Dog</option>
+                        <option id="Cat" value="Cat" aria-label="Cat">Cat</option>
+                        <option id="Rabbit" value="Rabbit" aria-label="Rabbit">Rabbit</option>
+                        <option id="Bird" value="Bird" aria-label="Bird">Bird</option>
+                        <option id="Other" value="Other" aria-label="Other">Other</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label for="appointment-date">Appointment Date</label>
-                    <input type="date" id="appointment-date" required>
+                    <label for="appointment-date" aria-label="Appointment Date label">Appointment Date</label>
+                    <input type="date" id="appointment-date" aria-label="Appointment Date input" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="appointment-time">Preferred Time</label>
-                    <input type="time" id="appointment-time" required>
+                    <label for="appointment-time" aria-label="Appointment Time label">Preferred Time</label>
+                    <input type="time" id="appointment-time" aria-label="Appointment Time input" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="notes">Special Instructions</label>
-                    <textarea id="notes" rows="3" placeholder="Any allergies or special requests?"></textarea>
+                    <label for="notes" aria-label="Special Instructions label">Special Instructions</label>
+                    <textarea id="notes" rows="3" placeholder="Any allergies or special requests?" aria-label="Special Instructions input"></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label for="Services">Selected Services</label>
-
+                    <label for="Services" aria-label="Selected Services label">Selected Services</label>
                     <div id="empty-message">
                         No services selected.
                     </div>
 
-                    <ul id="appointment-list">
+                    <ul id="appointment-list" aria-label="Selected Services list">
+                        <!-- Selected services will be appended here -->
 
                     </ul>
                 </div>
@@ -325,7 +325,7 @@
 
                 </div>
 
-                <button id="book-btn">
+                <button id="book-btn" aria-label="Book Appointment button">
                     Book Appointment
                 </button>
             </div>

@@ -130,7 +130,7 @@ document.querySelectorAll(".add-service").forEach((button) => {
 
                 ₹${price}
 
-                <button class="remove-btn">
+                <button class="remove-btn" aria-label="Remove ${name} from appointment">
                     ✕
                 </button>
 
@@ -182,58 +182,141 @@ appointmentList.addEventListener("click", (e) => {
 // ==============================
 // Book Appointment
 // ==============================
+// ==============================
+// Validation Helpers
+// ==============================
+
+function showError(field) {
+    field.classList.add("error");
+}
+
+function clearError(field) {
+    field.classList.remove("error");
+}
+
+
+// ==============================
+// Field References
+// ==============================
+
+const ownerNameField = document.getElementById("owner-name");
+const petNameField = document.getElementById("pet-name");
+const petTypeField = document.getElementById("pet-type");
+const dateField = document.getElementById("appointment-date");
+const timeField = document.getElementById("appointment-time");
+const notesField = document.getElementById("notes");
 
 const bookButton = document.getElementById("book-btn");
+
+// Remove error while typing
+[
+    ownerNameField,
+    petNameField,
+    petTypeField,
+    dateField,
+    timeField,
+    notesField
+].forEach(field => {
+
+    field.addEventListener("input", () => clearError(field));
+    field.addEventListener("change", () => clearError(field));
+
+});
+
+// Prevent selecting past dates
+dateField.min = new Date().toISOString().split("T")[0];
+
+// ==============================
+// Book Appointment
+// ==============================
+
 bookButton.addEventListener("click", () => {
-  const ownerName = sanitizeInput(document.getElementById("owner-name").value);
 
-  const petName = sanitizeInput(document.getElementById("pet-name").value);
+    // Clear previous errors
+    [
+        ownerNameField,
+        petNameField,
+        petTypeField,
+        dateField,
+        timeField,
+        notesField
+    ].forEach(clearError);
 
-  const petType = document.getElementById("pet-type").value;
+    // Read & sanitize values
+    const ownerName = sanitizeInput(ownerNameField.value);
+    const petName = sanitizeInput(petNameField.value);
+    const petType = petTypeField.value;
+    const appointmentDate = dateField.value;
+    const appointmentTime = timeField.value;
+    const notes = sanitizeInput(notesField.value);
 
-  const appointmentDate = document.getElementById("appointment-date").value;
+    let valid = true;
 
-  const appointmentTime = document.getElementById("appointment-time").value;
+    // =====================
+    // Required validation
+    // =====================
 
-  const notes = sanitizeInput(document.getElementById("notes").value);
-  //correct it/
+    if (!ownerName) {
+        showError(ownerNameField);
+        valid = false;
+    }
 
-  console.log({
-    ownerName,
-    petName,
-    petType,
-    appointmentDate,
-    appointmentTime,
-    notes,
-  });
-  if (
-    !ownerName ||
-    !petName ||
-    !petType ||
-    !appointmentDate ||
-    !appointmentTime
-  ) {
-    alert("Please fill in all booking details.");
-    return;
-  }
+    if (!petName) {
+        showError(petNameField);
+        valid = false;
+    }
 
-  const selectedDateTime = new Date(`${appointmentDate}T${appointmentTime}`);
-  const now = new Date();
+    if (!petType) {
+        showError(petTypeField);
+        valid = false;
+    }
 
-  if (selectedDateTime < now) {
-    alert("Please select a future date and time.");
-    return;
-  }
+    if (!appointmentDate) {
+        showError(dateField);
+        valid = false;
+    }
 
-  if (selectedServices.size === 0) {
-    alert("Please select at least one service.");
-    return;
-  }
+    if (!appointmentTime) {
+        showError(timeField);
+        valid = false;
+    }
 
-  const services = [...selectedServices].join(", ");
+    if (!valid) {
+        alert("Please fill all required fields.");
+        return;
+    }
 
-  alert(`
-Appointment Booked Successfully!
+    // =====================
+    // Date & Time Validation
+    // =====================
+
+    const selectedDateTime = new Date(
+        `${appointmentDate}T${appointmentTime}`
+    );
+
+    if (selectedDateTime <= new Date()) {
+
+        showError(dateField);
+        showError(timeField);
+
+        alert("Please select a future date and time.");
+        return;
+    }
+
+    // =====================
+    // Service Validation
+    // =====================
+
+    if (selectedServices.size === 0) {
+        alert("Please select at least one service.");
+        return;
+    }
+
+    // =====================
+    // Success
+    // =====================
+
+    alert(`Appointment Booked Successfully!
 
 Owner: ${ownerName}
 Pet: ${petName}
@@ -250,46 +333,47 @@ Total: ₹${total}
 Notes:
 ${notes || "None"}
 `);
-  // Reset form fields
-  document.getElementById("owner-name").value = "";
-  document.getElementById("pet-name").value = "";
-  document.getElementById("pet-type").selectedIndex = 0;
-  document.getElementById("appointment-date").value = "";
-  document.getElementById("appointment-time").value = "";
-  document.getElementById("notes").value = "";
 
-  // Clear appointment list
-  appointmentList.innerHTML = "";
+    // Analytics
+    logAnalytics(
+        "User completed booking on Luxury Pet Grooming Salon Pricing Page"
+    );
 
-  // Reset total
-  total = 0;
-  totalPrice.textContent = "₹0";
+    // =====================
+    // Reset Form
+    // =====================
 
-  // Clear selected services
-  selectedServices.clear();
+    ownerNameField.value = "";
+    petNameField.value = "";
+    petTypeField.selectedIndex = 0;
+    dateField.value = "";
+    timeField.value = "";
+    notesField.value = "";
 
-  // Show empty message
-  emptyMessage.style.display = "block";
+    appointmentList.innerHTML = "";
 
-  // Reset all Add Service buttons
-  document.querySelectorAll(".add-service").forEach((button) => {
-    button.disabled = false;
-    button.textContent = "Add Service";
-  });
+    total = 0;
+    totalPrice.textContent = "₹0";
 
-  // Optional: Clear the search box
-  search.value = "";
+    selectedServices.clear();
 
-  // Show only the current tab again
-  cards.forEach((card) => {
-    card.style.display =
-      card.dataset.category === currentCategory ? "flex" : "none";
-  });
-  logAnalytics(
-    "User completed booking on Luxury Pet Grooming Salon Pricing Page",
-  );
+    emptyMessage.style.display = "block";
+
+    document.querySelectorAll(".add-service").forEach(button => {
+        button.disabled = false;
+        button.textContent = "Add Service";
+    });
+
+    search.value = "";
+
+    cards.forEach(card => {
+        card.style.display =
+            card.dataset.category === currentCategory
+                ? "flex"
+                : "none";
+    });
+
 });
-
 // ==============================
 // Logs
 // ==============================
