@@ -383,7 +383,12 @@ button {
 }
 
 .form-group {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    align-items: center;
+    gap: 16px;
     margin-bottom: 18px;
+
 }
 
 .form-group label {
@@ -403,7 +408,7 @@ button {
     font: inherit;
     background: var(--surface);
     transition: border-color .3s ease, box-shadow .3s ease;
-}
+} 
 
 .form-group input:focus,
 .form-group select:focus,
@@ -416,6 +421,10 @@ button {
 textarea {
     resize: vertical;
 }
+
+.appointment h2{
+    margin-bottom: 20px;
+}
 .appointment {
     margin-top: 50px;
     position: sticky;
@@ -425,7 +434,7 @@ textarea {
     padding: 30px;
     box-shadow: var(--shadow-lg);
     background: transparent;
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     overflow: hidden;
 }

@@ -7,84 +7,80 @@ const grid = document.querySelector(".services-grid");
 let currentCategory = "bath";
 
 tabs.forEach((tab) => {
-    tab.addEventListener("click", () => {
-        tabs.forEach((t) => t.classList.remove("active"));
-        tab.classList.add("active");
+  tab.addEventListener("click", () => {
+    tabs.forEach((t) => t.classList.remove("active"));
+    tab.classList.add("active");
 
-        grid.classList.add("changing");
+    grid.classList.add("changing");
 
-        setTimeout(() => {
-            currentCategory = tab.dataset.category;
+    setTimeout(() => {
+      currentCategory = tab.dataset.category;
 
-            const category = tab.dataset.category;
-            logAnalytics(`User selected "${currentCategory}" category`);
+      const category = tab.dataset.category;
+      logAnalytics(`User selected "${currentCategory}" category`);
 
-            cards.forEach((card) => {
-                card.style.display =
-                    card.dataset.category === category ? "flex" : "none";
-            });
+      cards.forEach((card) => {
+        card.style.display =
+          card.dataset.category === category ? "flex" : "none";
+      });
 
-            grid.classList.remove("changing");
-        }, 250);
-    });
+      grid.classList.remove("changing");
+    }, 250);
+  });
 });
 
 // Show Bath services initially
 cards.forEach((card) => {
-    if (card.dataset.category !== "bath") {
-        card.style.display = "none";
-    }
+  if (card.dataset.category !== "bath") {
+    card.style.display = "none";
+  }
 });
 
 // ==============================
 // Search
 // ==============================
 
-function sanitizeInput(input) {
-    return input
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#39;")
-        .trim();
+function sanitizeInput(value) {
+  const div = document.createElement("div");
+  div.textContent = value.trim();
+  return div.innerHTML;
 }
 
 const search = document.getElementById("search");
 const noResults = document.getElementById("no-results");
 
 search.addEventListener("input", () => {
-    const value = search.value.trim().toLowerCase();
-    let visibleCards = 0;
+  const value = sanitizeInput(search.value).toLowerCase();
+  let visibleCards = 0;
 
-    cards.forEach((card) => {
-        const service =
-            card.dataset.name.toLowerCase() || card.dataset.description.toLowerCase();
+  cards.forEach((card) => {
+    const service =
+      card.dataset.name.toLowerCase() || card.dataset.description.toLowerCase();
 
-        if (value === "") {
-            if (card.dataset.category === currentCategory) {
-                card.style.display = "flex";
-                visibleCards++;
-            } else {
-                card.style.display = "none";
-            }
-        } else {
-            const searchableText = `
+    if (value === "") {
+      if (card.dataset.category === currentCategory) {
+        card.style.display = "flex";
+        visibleCards++;
+      } else {
+        card.style.display = "none";
+      }
+    } else {
+      const searchableText = `
     ${card.dataset.name}
     ${card.dataset.description}
 `.toLowerCase();
 
-            if (searchableText.includes(value)) {
-                card.style.display = "flex";
-            } else {
-                card.style.display = "none";
-            }
-        }
-    });
+      if (searchableText.includes(value)) {
+        card.style.display = "flex";
+      } else {
+        card.style.display = "none";
+      }
+    }
+  });
 
-    noResults.style.display = visibleCards === 0 ? "block" : "none";
+  noResults.style.display = visibleCards === 0 ? "block" : "none";
 
-    logAnalytics(`User searched for "${search.value.trim()}"`);
+  logAnalytics(`User searched for "${search.value.trim()}"`);
 });
 
 // ==============================
@@ -104,30 +100,30 @@ const selectedServices = new Set();
 // ==============================
 
 document.querySelectorAll(".add-service").forEach((button) => {
-    button.addEventListener("click", () => {
-        const card = button.closest(".card");
+  button.addEventListener("click", () => {
+    const card = button.closest(".card");
 
-        const name = card.dataset.name;
-        const price = Number(card.dataset.price);
+    const name = card.dataset.name;
+    const price = Number(card.dataset.price);
 
-        if (selectedServices.has(name)) {
-            alert("Service already added.");
-            return;
-        }
+    if (selectedServices.has(name)) {
+      alert("Service already added.");
+      return;
+    }
 
-        selectedServices.add(name);
+    selectedServices.add(name);
 
-        button.textContent = "Added";
-        button.disabled = true;
+    button.textContent = "Added";
+    button.disabled = true;
 
-        emptyMessage.style.display = "none";
+    emptyMessage.style.display = "none";
 
-        const li = document.createElement("li");
+    const li = document.createElement("li");
 
-        li.dataset.name = name;
-        li.dataset.price = price;
+    li.dataset.name = name;
+    li.dataset.price = price;
 
-        li.innerHTML = `
+    li.innerHTML = `
             <span>${name}</span>
 
             <div>
@@ -141,13 +137,13 @@ document.querySelectorAll(".add-service").forEach((button) => {
             </div>
         `;
 
-        appointmentList.appendChild(li);
+    appointmentList.appendChild(li);
 
-        total += price;
+    total += price;
 
-        totalPrice.textContent = `₹${total}`;
-    });
-    logAnalytics(`User added "${selectedServices}" to appointment`);
+    totalPrice.textContent = `₹${total}`;
+  });
+  logAnalytics(`User added "${selectedServices}" to appointment`);
 });
 
 // ==============================
@@ -155,71 +151,88 @@ document.querySelectorAll(".add-service").forEach((button) => {
 // ==============================
 
 appointmentList.addEventListener("click", (e) => {
-    if (!e.target.classList.contains("remove-btn")) return;
+  if (!e.target.classList.contains("remove-btn")) return;
 
-    const item = e.target.closest("li");
+  const item = e.target.closest("li");
 
-    const name = item.dataset.name;
-    const price = Number(item.dataset.price);
+  const name = item.dataset.name;
+  const price = Number(item.dataset.price);
 
-    selectedServices.delete(name);
+  selectedServices.delete(name);
 
-    total -= price;
+  total -= price;
 
-    totalPrice.textContent = `₹${total}`;
+  totalPrice.textContent = `₹${total}`;
 
-    item.remove();
+  item.remove();
 
-    const card = document.querySelector(`.card[data-name="${name}"]`);
+  const card = document.querySelector(`.card[data-name="${name}"]`);
 
-    const button = card.querySelector(".add-service");
+  const button = card.querySelector(".add-service");
 
-    button.disabled = false;
-    button.textContent = "Add Service";
+  button.disabled = false;
+  button.textContent = "Add Service";
 
-    if (appointmentList.children.length === 0) {
-        emptyMessage.style.display = "block";
-    }
-    logAnalytics(`User removed "${selectedServices}" from appointment`);
+  if (appointmentList.children.length === 0) {
+    emptyMessage.style.display = "block";
+  }
+  logAnalytics(`User removed "${selectedServices}" from appointment`);
 });
 
 // ==============================
 // Book Appointment
 // ==============================
-const ownerName = sanitizeInput(document.getElementById("owner-name").value);
-
-const petName = sanitizeInput(document.getElementById("pet-name").value);
-
-const petType = document.getElementById("pet-type").value;
-
-const appointmentDate = document.getElementById("appointment-date").value;
-
-const appointmentTime = document.getElementById("appointment-time").value;
-
-const notes = sanitizeInput(document.getElementById("notes").value);
 
 const bookButton = document.getElementById("book-btn");
 bookButton.addEventListener("click", () => {
-    //correct it
-    // if (
-    //     !ownerName ||
-    //     !petName ||
-    //     !petType ||
-    //     !appointmentDate ||
-    //     !appointmentTime
-    // ) {
-    //     alert("Please fill in all booking details.");
-    //     return;
-    // }
+  const ownerName = sanitizeInput(document.getElementById("owner-name").value);
 
-    if (selectedServices.size === 0) {
-        alert("Please select at least one service.");
-        return;
-    }
+  const petName = sanitizeInput(document.getElementById("pet-name").value);
 
-    const services = [...selectedServices].join(", ");
+  const petType = document.getElementById("pet-type").value;
 
-    alert(`
+  const appointmentDate = document.getElementById("appointment-date").value;
+
+  const appointmentTime = document.getElementById("appointment-time").value;
+
+  const notes = sanitizeInput(document.getElementById("notes").value);
+  //correct it/
+
+  console.log({
+    ownerName,
+    petName,
+    petType,
+    appointmentDate,
+    appointmentTime,
+    notes,
+  });
+  if (
+    !ownerName ||
+    !petName ||
+    !petType ||
+    !appointmentDate ||
+    !appointmentTime
+  ) {
+    alert("Please fill in all booking details.");
+    return;
+  }
+
+  const selectedDateTime = new Date(`${appointmentDate}T${appointmentTime}`);
+  const now = new Date();
+
+  if (selectedDateTime < now) {
+    alert("Please select a future date and time.");
+    return;
+  }
+
+  if (selectedServices.size === 0) {
+    alert("Please select at least one service.");
+    return;
+  }
+
+  const services = [...selectedServices].join(", ");
+
+  alert(`
 Appointment Booked Successfully!
 
 Owner: ${ownerName}
@@ -237,44 +250,44 @@ Total: ₹${total}
 Notes:
 ${notes || "None"}
 `);
-    // Reset form fields
-    document.getElementById("owner-name").value = "";
-    document.getElementById("pet-name").value = "";
-    document.getElementById("pet-type").selectedIndex = 0;
-    document.getElementById("appointment-date").value = "";
-    document.getElementById("appointment-time").value = "";
-    document.getElementById("notes").value = "";
+  // Reset form fields
+  document.getElementById("owner-name").value = "";
+  document.getElementById("pet-name").value = "";
+  document.getElementById("pet-type").selectedIndex = 0;
+  document.getElementById("appointment-date").value = "";
+  document.getElementById("appointment-time").value = "";
+  document.getElementById("notes").value = "";
 
-    // Clear appointment list
-    appointmentList.innerHTML = "";
+  // Clear appointment list
+  appointmentList.innerHTML = "";
 
-    // Reset total
-    total = 0;
-    totalPrice.textContent = "₹0";
+  // Reset total
+  total = 0;
+  totalPrice.textContent = "₹0";
 
-    // Clear selected services
-    selectedServices.clear();
+  // Clear selected services
+  selectedServices.clear();
 
-    // Show empty message
-    emptyMessage.style.display = "block";
+  // Show empty message
+  emptyMessage.style.display = "block";
 
-    // Reset all Add Service buttons
-    document.querySelectorAll(".add-service").forEach((button) => {
-        button.disabled = false;
-        button.textContent = "Add Service";
-    });
+  // Reset all Add Service buttons
+  document.querySelectorAll(".add-service").forEach((button) => {
+    button.disabled = false;
+    button.textContent = "Add Service";
+  });
 
-    // Optional: Clear the search box
-    search.value = "";
+  // Optional: Clear the search box
+  search.value = "";
 
-    // Show only the current tab again
-    cards.forEach((card) => {
-        card.style.display =
-            card.dataset.category === currentCategory ? "flex" : "none";
-    });
-    logAnalytics(
-        "User completed booking on Luxury Pet Grooming Salon Pricing Page",
-    );
+  // Show only the current tab again
+  cards.forEach((card) => {
+    card.style.display =
+      card.dataset.category === currentCategory ? "flex" : "none";
+  });
+  logAnalytics(
+    "User completed booking on Luxury Pet Grooming Salon Pricing Page",
+  );
 });
 
 // ==============================
@@ -282,7 +295,7 @@ ${notes || "None"}
 // ==============================
 
 function logAnalytics(action) {
-    console.log(`[Analytics] ${action}`);
+  console.log(`[Analytics] ${action}`);
 }
 
 // ==============================
